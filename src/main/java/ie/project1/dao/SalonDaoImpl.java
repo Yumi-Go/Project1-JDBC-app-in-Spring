@@ -46,9 +46,9 @@ public class SalonDaoImpl implements SalonDao {
     // Get all salons by name e.g. all salons called "Hair Today".
     @Override
     public List<Salon> findAllByName(String name) {
-        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-        mapSqlParameterSource.addValue("name", name);
-        return namedParameterJdbcTemplate.getJdbcTemplate().query("select * from salons where salon_name=:name", new SalonRowMapper());
+//        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+//        mapSqlParameterSource.addValue("name", name);
+        return jdbcTemplate.query("select * from salons where LOWER(salon_name)=?", new SalonRowMapper(), name.toLowerCase());
     }
 
     // Get a salon by its primary key.

@@ -4,7 +4,8 @@ VALUES
     ('sa2', 'Ikon Hair Cork', '42 Marlboro St, Centre, Cork, T12 V1YX', '0214274588', '1111111'),
     ('sa3', 'The Edge Hair Design', '1B Emmett Pl, Centre, Cork, T12 XN63', '0214222793', '0011100'),
     ('sa4', 'Kopper Hair Salon', '3 Half Moon St, Centre, Cork', '0214820692', '0111111'),
-    ('sa5', 'Edit Hair Club', '36/37 MacCurtain Street, Victorian Quarter, Cork, T23 FW14', '0214518121', '1111111');
+    ('sa5', 'Edit Hair Club', '36/37 MacCurtain Street, Victorian Quarter, Cork, T23 FW14', '0214518121', '1111111'),
+    ('sa6', 'Edit Hair Club', '20 Shandon Street, Cork, T23 FW30', '0219999121', '1110011');
 
 
 INSERT INTO stylists (stylist_id, stylist_name, stylist_phone, stylist_salary, salon_id)

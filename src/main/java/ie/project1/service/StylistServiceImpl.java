@@ -8,6 +8,7 @@ import ie.project1.service.exceptions.SalonNotFoundException;
 import ie.project1.service.exceptions.StylistIdAlreadyExists;
 import ie.project1.service.exceptions.StylistMalformedException;
 import ie.project1.service.exceptions.StylistNotFoundException;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,7 +65,7 @@ public class StylistServiceImpl implements StylistService {
             throw new SalonNotFoundException("Salon with Id " + id + " does not exist");
         if (stylistDao.findById(id).isEmpty())
             throw new StylistNotFoundException("Stylist with Id " + id + " does not exist");
-        return stylistDao.updateSalon(id, newSalonId);
+        return stylistDao.updateSalon(newSalonId, id);
     }
 
     @Override

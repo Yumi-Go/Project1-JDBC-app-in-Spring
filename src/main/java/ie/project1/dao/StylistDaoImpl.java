@@ -74,7 +74,7 @@ public class StylistDaoImpl implements StylistDao {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("new_salon", newSalonId);
         mapSqlParameterSource.addValue("id", id);
-        String SQL = "update stylists set salon_id = :new_salon where stylist_id=:id";
+        String SQL = "update stylists set salon_id=:new_salon where stylist_id=:id";
         return namedParameterJdbcTemplate.update(SQL, mapSqlParameterSource) == 1;
     }
 

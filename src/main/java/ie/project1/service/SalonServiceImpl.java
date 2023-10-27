@@ -43,7 +43,7 @@ public class SalonServiceImpl implements SalonService {
 
     @Override
     public List<Salon> findAllByName(String name) throws SalonNotFoundException {
-        if (salonDao.findAllByName(name).isEmpty())
+        if (salonDao.findAllByName(name) == null)
             throw new SalonNotFoundException("Salon with Name " + name + " does not exist");
         return salonDao.findAllByName(name);
     }
