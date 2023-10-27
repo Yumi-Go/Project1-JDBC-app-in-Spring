@@ -19,7 +19,7 @@ public interface StylistDao {
     Optional<Stylist> findById(int id);
 
     // Move a stylist from one salon to another.
-    boolean updateSalon(int id, int newSalonId);
+    boolean updateSalon(int newSalonId, int id);
 
     // Delete a stylist.
     boolean deleteById(int id);

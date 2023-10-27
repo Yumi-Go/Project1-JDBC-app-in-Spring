@@ -59,11 +59,11 @@ public class StylistServiceImpl implements StylistService {
     }
 
     @Override
-    public boolean updateSalon(int id, int newSalonId) throws StylistNotFoundException, SalonNotFoundException {
-        if (stylistDao.findById(id).isEmpty())
-            throw new StylistNotFoundException("Stylist with Id " + id + " does not exist");
+    public boolean updateSalon(int newSalonId, int id) throws SalonNotFoundException, StylistNotFoundException {
         if (salonDao.findById(newSalonId).isEmpty())
             throw new SalonNotFoundException("Salon with Id " + id + " does not exist");
+        if (stylistDao.findById(id).isEmpty())
+            throw new StylistNotFoundException("Stylist with Id " + id + " does not exist");
         return stylistDao.updateSalon(id, newSalonId);
     }
 

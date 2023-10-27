@@ -66,7 +66,7 @@ public class StylistDaoImpl implements StylistDao {
 
     // Move a stylist from one salon to another.
     @Override
-    public boolean updateSalon(int id, int newSalonId) {
+    public boolean updateSalon(int newSalonId, int id) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("new_salon", newSalonId);
         mapSqlParameterSource.addValue("id", id);

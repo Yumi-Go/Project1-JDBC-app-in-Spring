@@ -20,7 +20,7 @@ public interface StylistService {
 
     Stylist findById(int id) throws StylistNotFoundException;
 
-    boolean updateSalon(int id, int newSalonId) throws StylistNotFoundException, SalonNotFoundException;
+    boolean updateSalon(int newSalonId, int id) throws SalonNotFoundException, StylistNotFoundException;
 
     void deleteById(int id) throws StylistNotFoundException;
 

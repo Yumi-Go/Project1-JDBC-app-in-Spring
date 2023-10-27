@@ -21,7 +21,7 @@ public interface SalonDao {
     void create(Salon salon);
 
     // Get all salons by name e.g. all salons called "Hair Today".
-    List<Salon> findByName(String name);
+    List<Salon> findAllByName(String name);
 
     // Get a salon by its primary key.
     Optional<Salon> findById(int id);

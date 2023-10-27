@@ -1,6 +1,7 @@
 package ie.project1.service;
 
 import ie.project1.dao.SalonDao;
+import ie.project1.dao.dto.StylistWithSalon;
 import ie.project1.entities.Salon;
 import ie.project1.entities.Stylist;
 import ie.project1.service.exceptions.*;
@@ -22,12 +23,6 @@ public class SalonServiceImpl implements SalonService {
         return salonDao.getAll();
     }
 
-
-//    private int salonId; // unique
-//    private String salonName; // not blank, not unique
-//    private String salonAddress; // not blank
-//    private String salonPhone; // not blank, no validation is required
-//    private String salonOpenDays; // at least 1 day per week. e.g. string representing each day "MTWTFSS" so "0111110" might mean closed Monday and Sunday but open all other days.
     @Override
     public Salon add(Salon salon) throws SalonMalformedException, SalonIdAlreadyExists, SalonNotFoundException {
         if (salon.getSalonId() < 0)
@@ -45,35 +40,41 @@ public class SalonServiceImpl implements SalonService {
         if (salonDao.findById(salon.getSalonId()).isEmpty())
             throw new SalonNotFoundException("Salon with ID " + salon.getSalonId() + " does not exist.");
         salonDao.create(salon);
-        return salonDao.findById(salon.getStylistId()).get();
-    }
-
-
-
-    여기서부터 할 차례!!!!!!!!!!!!!!!!!
-
-    @Override
-    public List<Salon> findByName(String name) {
-        return
+        return salonDao.findById(salon.getSalonId()).get();
     }
 
     @Override
-    public Salon findById(int id) {
-        return Optional.empty();
+    public List<Salon> findAllByName(String name) throws SalonNotFoundException {
+        if (salonDao.findAllByName(name).isEmpty())
+            throw new SalonNotFoundException("Salon with Name " + name + " does not exist");
+        return salonDao.findAllByName(name);
     }
 
     @Override
-    public boolean editOpenDays(String newOpenDays, int id) {
-        return false;
+    public Salon findById(int id) throws SalonNotFoundException {
+        return salonDao.findById(id).orElseThrow(()-> new SalonNotFoundException("Salon with id " + id + "was not found."));
+    }
+
+    // Update salon by modifying the days on which it is open
+    @Override
+    public boolean editOpenDays(String newOpenDays, int id) throws SalonMalformedException, SalonNotFoundException {
+        if (newOpenDays.length() != 7)
+            throw new SalonMalformedException("Invalid the length of days opened");
+        if (salonDao.findById(id).isEmpty())
+            throw new SalonNotFoundException("Salon with Id " + id + " does not exist");
+        return salonDao.editOpenDays(newOpenDays, id);
     }
 
     @Override
-    public void deleteById(int id) {
-
+    public void deleteById(int id) throws SalonNotFoundException {
+        salonDao.deleteById(id);
+        if (!salonDao.deleteById(id))
+            throw new SalonNotFoundException("Salon with id " + id + " was not found.");
     }
 
     @Override
     public List<Salon> findAllDaysOpen() {
-        return null;
+        return salonDao.findAllDaysOpen();
     }
+
 }

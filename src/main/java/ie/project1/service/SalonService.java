@@ -7,19 +7,18 @@ import ie.project1.service.exceptions.SalonNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public interface SalonService {
     List<Salon> getAll();
 
-    void create(Salon salon) throws SalonMalformedException, SalonIdAlreadyExists;;
+    Salon add(Salon salon) throws SalonMalformedException, SalonIdAlreadyExists, SalonNotFoundException;
 
-    List<Salon> findByName(String name);
+    List<Salon> findAllByName(String name) throws SalonNotFoundException;
 
     Salon findById(int id) throws SalonNotFoundException;
 
-    boolean editOpenDays(String newOpenDays, int id);
+    boolean editOpenDays(String newOpenDays, int id) throws SalonMalformedException, SalonNotFoundException;
 
     void deleteById(int id) throws SalonNotFoundException;
 
