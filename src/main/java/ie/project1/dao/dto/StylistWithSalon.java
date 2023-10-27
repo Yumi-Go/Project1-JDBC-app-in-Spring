@@ -9,7 +9,7 @@ package ie.project1.dao.dto;
 //private String stylistPhone; // can be blank
 //private int stylistSalary; // positive number
 public record StylistWithSalon(
-        int stylistId,
+        String stylistId,
         String stylistName,
         String stylistPhone,
         int stylistSalary,

@@ -14,17 +14,19 @@ import java.util.Optional;
 
 @Service
 public interface StylistService {
-    List<Stylist> findAllBySalon(int salonId) throws SalonNotFoundException;
+    int count();
+
+    List<Stylist> findAllBySalon(String salonId) throws SalonNotFoundException;
 
     Stylist add(Stylist stylist) throws StylistMalformedException, StylistIdAlreadyExists, SalonNotFoundException;
 
-    Stylist findById(int id) throws StylistNotFoundException;
+    Stylist findById(String id) throws StylistNotFoundException;
 
-    boolean updateSalon(int newSalonId, int id) throws SalonNotFoundException, StylistNotFoundException;
+    boolean updateSalon(String newSalonId, String id) throws SalonNotFoundException, StylistNotFoundException;
 
-    void deleteById(int id) throws StylistNotFoundException;
+    void deleteById(String id) throws StylistNotFoundException;
 
-    int getSalaryBySalon(int salonId) throws SalonNotFoundException ;
+    int getSalaryBySalon(String salonId) throws SalonNotFoundException ;
 
     List<StylistWithSalon> findAllWithSalon();
 }

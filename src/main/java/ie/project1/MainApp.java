@@ -1,52 +1,85 @@
 package ie.project1;
 
+import ie.project1.entities.Salon;
+import ie.project1.entities.Stylist;
 import ie.project1.service.SalonService;
 import ie.project1.service.StylistService;
 import ie.project1.service.exceptions.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import java.util.Locale;
+
 public class MainApp {
     public static void main(String[] args) throws SalonNotFoundException, SalonMalformedException, SalonIdAlreadyExists,
             StylistNotFoundException, StylistMalformedException, StylistIdAlreadyExists {
-        System.setProperty("spring.profiles.active", "test");
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext(Config.class);
-        SalonService studioService = applicationContext.getBean(SalonService.class);
-        StylistService cartoonService = applicationContext.getBean(StylistService.class);
+        SalonService salonService = applicationContext.getBean(SalonService.class);
+        StylistService stylistService = applicationContext.getBean(StylistService.class);
 
-        // save new studio
-        System.out.println();
-        System.out.println("Create new studio");
-        Studio newStudio = studioService.save(new Studio(6, "My Studio", 2023));
-        System.out.println(newStudio);
-        studioService.findAll().forEach(System.out::println);
 
-        // delete studio
-        System.out.println();
-        System.out.println("Delete studio - Before");
-        System.out.println("There are " + cartoonService.count() + " cartoons.");
-        studioService.findAll().forEach(System.out::println);
-        studioService.deleteById(1);
-        System.out.println();
-        System.out.println("Delete studio - After");
-        System.out.println("There are " + cartoonService.count() + " cartoons.");
-        studioService.findAll().forEach(System.out::println);
+//        // create a new stylist
+//        System.out.println();
+//        System.out.println("******************** Create new Stylist ********************");
+//        System.out.println("### Stylists list before Creation");
+//        Stylist newStylist = stylistService.add(
+//                new Stylist("st99", "Yumi Go", "08342115",50000,"sa3")
+//        );
+//        System.out.println("New Stylist: ");
+//        System.out.println(newStylist);
+//        System.out.println();
 
-        // find studio by id
+        // create a new salon
         System.out.println();
-        System.out.println("Find studio by id");
-        System.out.println(studioService.findById(2));
+        System.out.println("Create new salon");
+        Salon newSalon = salonService.save(
+                new Salon("sa25", "Yumi's Hair Salon", "123 Cork city center, Cork, T12 D345",
+                        "(083) 421 5015", "1111001")
+        );
+        System.out.println(newSalon);
+        salonService.getAll().forEach(System.out::println);
+
+        // delete salon
+        System.out.println();
+        System.out.println("Salons list before Deletion");
+        salonService.getAll().forEach(System.out::println);
+        salonService.deleteById("sa3");
+        System.out.println();
+        System.out.println("Salons list after Deletion");
+        salonService.getAll().forEach(System.out::println);
+
+        // find salon by id
+        System.out.println();
+        System.out.println("Find salon by id");
+        System.out.println(salonService.findById("sa2"));
         try {
-            Studio studio = studioService.findById(19);
-            System.out.println(studio);
-        } catch (StudioNotFoundException exception) {
+            Salon salon = salonService.findById("sa32");
+            System.out.println(salon);
+        } catch (SalonNotFoundException exception) {
             System.out.println(exception.getClass().getName().toUpperCase() + ": " + exception.getMessage());
         }
 
-        // find oldest cartoons with studios
+        // Get all stylists along with the name of the salon for which they work
         System.out.println();
-        System.out.println("Find oldest cartoons with studios");
-        cartoonService.findOldestAndStudio().forEach(System.out::println);
+        System.out.println("Get all stylists along with the name of the salon for which they work");
+        stylistService.findAllWithSalon().forEach(System.out::println);
+        System.out.println();
+        System.out.println();
+        System.out.println();
 
+        // List all those salons open 7 days a week.
+        System.out.println();
+        System.out.println("All salons opened 7 days a week");
+        salonService.findAllDaysOpen().forEach(System.out::println);
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
+        // Language
+        System.out.println("===================================================================");
+        System.out.println(applicationContext.getMessage("hello", null, Locale.FRENCH));
+        System.out.println(applicationContext.getMessage("welcome", null, Locale.ENGLISH));
+        System.out.println(applicationContext.getMessage("love", null, Locale.KOREAN));
+        System.out.println("===================================================================");
     }
 }

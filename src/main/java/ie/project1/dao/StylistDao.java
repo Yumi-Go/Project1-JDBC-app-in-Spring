@@ -10,22 +10,24 @@ import java.util.Optional;
 
 public interface StylistDao {
 
+    int count();
+
     // Get all stylists in a particular salon.
-    List<Stylist> findAllBySalon(int salonId);
+    List<Stylist> findAllBySalon(String salonId);
 
     // Add a stylist, ensuring you add them to a salon.
-    void create(Stylist stylist);
+    void save(Stylist stylist);
 
-    Optional<Stylist> findById(int id);
+    Optional<Stylist> findById(String id);
 
     // Move a stylist from one salon to another.
-    boolean updateSalon(int newSalonId, int id);
+    boolean updateSalon(String newSalonId, String id);
 
     // Delete a stylist.
-    boolean deleteById(int id);
+    boolean deleteById(String id);
 
     // to get average salary in particular salon in service layer
-    int getSalaryBySalon(int salonId);
+    int getSalaryBySalon(String salonId);
 
     //Get all stylists along with the name of the salon for which they work - use a record.
     List<StylistWithSalon> findAllWithSalon();

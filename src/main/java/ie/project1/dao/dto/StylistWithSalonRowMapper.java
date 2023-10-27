@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class StylistWithSalonRowMapper implements RowMapper<StylistWithSalon> {
     public StylistWithSalon mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new StylistWithSalon(
-                rs.getInt(1),
+                rs.getString(1),
                 rs.getString(2),
                 rs.getString(3),
                 rs.getInt(4),

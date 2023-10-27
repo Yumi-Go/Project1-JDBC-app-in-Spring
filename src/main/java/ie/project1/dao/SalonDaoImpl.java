@@ -31,7 +31,7 @@ public class SalonDaoImpl implements SalonDao {
 
     // Create a new salon providing all data and return this new salon (from service layer).
     @Override
-    public void create(Salon salon) {
+    public void save(Salon salon) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("id", salon.getSalonId());
         mapSqlParameterSource.addValue("name", salon.getSalonName());
@@ -53,7 +53,7 @@ public class SalonDaoImpl implements SalonDao {
 
     // Get a salon by its primary key.
     @Override
-    public Optional<Salon> findById(int id) {
+    public Optional<Salon> findById(String id) {
         try {
             MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
             mapSqlParameterSource.addValue("id", id);
@@ -67,7 +67,7 @@ public class SalonDaoImpl implements SalonDao {
 
     // Update salon by modifying the days on which it is open
     @Override
-    public boolean editOpenDays(String newOpenDays, int id) {
+    public boolean editOpenDays(String newOpenDays, String id) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("new_open_days", newOpenDays);
         mapSqlParameterSource.addValue("id", id);
@@ -77,7 +77,7 @@ public class SalonDaoImpl implements SalonDao {
 
     // Delete a salon and all that salon's stylists.
     @Override
-    public boolean deleteById(int id) {
+    public boolean deleteById(String id) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("id", id);
         return namedParameterJdbcTemplate.update("delete from salons where salon_id=:id", mapSqlParameterSource) == 1;
@@ -86,6 +86,6 @@ public class SalonDaoImpl implements SalonDao {
     // List all those salons open 7 days a week.
     @Override
     public List<Salon> findAllDaysOpen() {
-        return jdbcTemplate.query("select * from salons where salon_open_days = 1111111", new SalonRowMapper());
+        return jdbcTemplate.query("select * from salons where salon_open_days = '1111111'", new SalonRowMapper());
     }
 }

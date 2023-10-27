@@ -15,9 +15,9 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class Stylist {
-    private int stylistId; // unique
+    private String stylistId; // unique
     private String stylistName; // not blank, not unique
     private String stylistPhone; // can be blank
     private int stylistSalary; // positive number
-    private int salonId; // foreign key
+    private String salonId; // foreign key
 }

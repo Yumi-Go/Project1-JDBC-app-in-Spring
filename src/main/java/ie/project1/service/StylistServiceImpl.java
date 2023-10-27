@@ -22,22 +22,24 @@ public class StylistServiceImpl implements StylistService {
     @Autowired
     private SalonDao salonDao;
 
+
+    public int count() {
+        return stylistDao.count();
+    }
+
     @Override
-    public List<Stylist> findAllBySalon(int salonId) throws SalonNotFoundException {
+    public List<Stylist> findAllBySalon(String salonId) throws SalonNotFoundException {
         if (salonDao.findById(salonId).isEmpty())
             throw new SalonNotFoundException("Salon with Id " + salonId + " does not exist");
         return stylistDao.findAllBySalon(salonId);
     }
 
-//    private int stylistId; // unique
-//    private String stylistName; // not blank, not unique
-//    private String stylistPhone; // can be blank
-//    private int stylistSalary; // positive number
-//    private int salonId; // foreign key
     @Override
     public Stylist add(Stylist stylist) throws StylistMalformedException, StylistIdAlreadyExists, SalonNotFoundException {
-        if (stylist.getStylistId() < 0)
-            throw new StylistMalformedException("ID is invalid");
+        if (salonDao.findById(stylist.getSalonId()).isEmpty())
+            throw new SalonNotFoundException("Salon with ID " + stylist.getSalonId() + " does not exist.");
+        if (stylist.getStylistId().isBlank())
+            throw new StylistMalformedException("Stylist Id cannot be blank");
         if (stylist.getStylistName().isBlank())
             throw new StylistMalformedException("Cartoon name cannot be blank");
         if (stylist.getStylistPhone().length() < 5 || stylist.getStylistPhone().length() > 15)
@@ -46,20 +48,18 @@ public class StylistServiceImpl implements StylistService {
             throw new StylistMalformedException("Invalid salary");
         if (stylistDao.findById(stylist.getStylistId()).isPresent())
             throw new StylistIdAlreadyExists("Stylist with Id " + stylist.getStylistId() + " already exists.");
-        if (salonDao.findById(stylist.getSalonId()).isEmpty())
-            throw new SalonNotFoundException("Salon with ID " + stylist.getSalonId() + " does not exist.");
-        stylistDao.create(stylist);
+        stylistDao.save(stylist);
         return stylistDao.findById(stylist.getStylistId()).get();
 
     }
 
     @Override
-    public Stylist findById(int id) throws StylistNotFoundException {
+    public Stylist findById(String id) throws StylistNotFoundException {
         return stylistDao.findById(id).orElseThrow(()-> new StylistNotFoundException("Stylist with id " + id + "was not found."));
     }
 
     @Override
-    public boolean updateSalon(int newSalonId, int id) throws SalonNotFoundException, StylistNotFoundException {
+    public boolean updateSalon(String newSalonId, String id) throws SalonNotFoundException, StylistNotFoundException {
         if (salonDao.findById(newSalonId).isEmpty())
             throw new SalonNotFoundException("Salon with Id " + id + " does not exist");
         if (stylistDao.findById(id).isEmpty())
@@ -68,14 +68,13 @@ public class StylistServiceImpl implements StylistService {
     }
 
     @Override
-    public void deleteById(int id) throws StylistNotFoundException {
-        stylistDao.deleteById(id);
+    public void deleteById(String id) throws StylistNotFoundException {
         if (!stylistDao.deleteById(id))
             throw new StylistNotFoundException("Stylist with id " + id + " was not found.");
     }
 
     @Override
-    public int getSalaryBySalon(int salonId) throws SalonNotFoundException {
+    public int getSalaryBySalon(String salonId) throws SalonNotFoundException {
         if (salonDao.findById(salonId).isEmpty())
             throw new SalonNotFoundException("Salon with Id " + salonId + " does not exist");
         return stylistDao.getSalaryBySalon(salonId);

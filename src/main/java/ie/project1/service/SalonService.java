@@ -12,15 +12,15 @@ import java.util.List;
 public interface SalonService {
     List<Salon> getAll();
 
-    Salon add(Salon salon) throws SalonMalformedException, SalonIdAlreadyExists, SalonNotFoundException;
+    Salon save(Salon salon) throws SalonMalformedException, SalonIdAlreadyExists;
 
     List<Salon> findAllByName(String name) throws SalonNotFoundException;
 
-    Salon findById(int id) throws SalonNotFoundException;
+    Salon findById(String id) throws SalonNotFoundException;
 
-    boolean editOpenDays(String newOpenDays, int id) throws SalonMalformedException, SalonNotFoundException;
+    boolean editOpenDays(String newOpenDays, String id) throws SalonMalformedException, SalonNotFoundException;
 
-    void deleteById(int id) throws SalonNotFoundException;
+    void deleteById(String id) throws SalonNotFoundException;
 
     List<Salon> findAllDaysOpen();
 }

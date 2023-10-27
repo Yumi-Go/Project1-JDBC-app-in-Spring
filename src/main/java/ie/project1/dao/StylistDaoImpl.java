@@ -31,28 +31,32 @@ public class StylistDaoImpl implements StylistDao {
 //        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
 //    }
 
+    @Override
+    public int count() {
+        return jdbcTemplate.queryForObject("select count(*) from stylists", Integer.class);
+    }
+
     // Get all stylists in a particular salon.
     @Override
-    public List<Stylist> findAllBySalon(int salonId) {
+    public List<Stylist> findAllBySalon(String salonId) {
         return jdbcTemplate.query("select * from stylists where salon_id = ?", new StylistRowMapper(), salonId);
     }
 
     // Add a stylist, ensuring you add them to a salon.
     @Override
-    public void create(Stylist stylist) {
+    public void save(Stylist stylist) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("id", stylist.getSalonId());
         mapSqlParameterSource.addValue("name", stylist.getStylistName());
         mapSqlParameterSource.addValue("phone", stylist.getStylistPhone());
         mapSqlParameterSource.addValue("salary", stylist.getStylistSalary());
         mapSqlParameterSource.addValue("salon", stylist.getSalonId());
-        String SQL = "insert into stylists(stylist_id, stylist_name, stylist_phone, stylist_salary, salon_id) " +
-                "values (:id, :name, :phone, :salary, :salon)";
+        String SQL = "insert into stylists(stylist_id, stylist_name, stylist_phone, stylist_salary, salon_id) values (:id, :name, :phone, :salary, :salon)";
         namedParameterJdbcTemplate.update(SQL, mapSqlParameterSource);
     }
 
     @Override
-    public Optional<Stylist> findById(int id) {
+    public Optional<Stylist> findById(String id) {
         try {
             MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
             mapSqlParameterSource.addValue("id", id);
@@ -66,7 +70,7 @@ public class StylistDaoImpl implements StylistDao {
 
     // Move a stylist from one salon to another.
     @Override
-    public boolean updateSalon(int newSalonId, int id) {
+    public boolean updateSalon(String newSalonId, String id) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("new_salon", newSalonId);
         mapSqlParameterSource.addValue("id", id);
@@ -76,18 +80,17 @@ public class StylistDaoImpl implements StylistDao {
 
     // Delete a stylist.
     @Override
-    public boolean deleteById(int id) {
+    public boolean deleteById(String id) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource().addValue("id", id);
         String SQL = "delete from stylists where stylist_id = :id";
         return namedParameterJdbcTemplate.update(SQL, mapSqlParameterSource) == 1;
     }
 
     @Override
-    public int getSalaryBySalon(int salonId) {
+    public int getSalaryBySalon(String salonId) {
         List<Stylist> stylists = findAllBySalon(salonId);
         List<Integer> salaryList = stylists.stream().map(Stylist::getStylistSalary).toList();
-//        for (Stylist s : stylists) {
-//        }
+
         int sum = 0;
         int average;
         for (Integer salary : salaryList) {
@@ -103,9 +106,5 @@ public class StylistDaoImpl implements StylistDao {
     public List<StylistWithSalon> findAllWithSalon() {
         return jdbcTemplate.query("select st.stylist_id, st.stylist_name, st.stylist_phone, st.stylist_salary, sa.salon_name " +
                 "from stylists st inner join salons sa on st.salon_id = sa.salon_id", new StylistWithSalonRowMapper());
-
-//        String SQL = "select st.stylist_id, st.stylist_name, st.stylist_phone, st.stylist_salary, sa.salon_name " +
-//                "from stylists st inner join salons sa on st.salon_id = sa.salon_id";
-//        return namedParameterJdbcTemplate.getJdbcTemplate().query(SQL, new StylistWithSalonRowMapper());
     }
 }

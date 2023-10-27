@@ -15,11 +15,11 @@ public class StylistRowMapper implements RowMapper<Stylist> {
     @Override
     public Stylist mapRow(ResultSet rs, int rowNum) throws SQLException {
         Stylist stylist = new Stylist();
-        stylist.setStylistId(rs.getInt(1));
+        stylist.setStylistId(rs.getString(1));
         stylist.setStylistName(rs.getString(2));
         stylist.setStylistPhone(rs.getString(3));
         stylist.setStylistSalary(rs.getInt(4));
-        stylist.setSalonId(rs.getInt(5));
+        stylist.setSalonId(rs.getString(5));
         return stylist;
     }
 }

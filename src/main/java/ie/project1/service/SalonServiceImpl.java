@@ -24,22 +24,20 @@ public class SalonServiceImpl implements SalonService {
     }
 
     @Override
-    public Salon add(Salon salon) throws SalonMalformedException, SalonIdAlreadyExists, SalonNotFoundException {
-        if (salon.getSalonId() < 0)
-            throw new SalonMalformedException("ID is invalid");
+    public Salon save(Salon salon) throws SalonMalformedException, SalonIdAlreadyExists {
+        if (salon.getSalonId().isBlank())
+            throw new SalonMalformedException("Salon Id cannot be blank");
         if (salon.getSalonName().isBlank())
             throw new SalonMalformedException("Salon name cannot be blank");
         if (salon.getSalonAddress().isBlank())
             throw new SalonMalformedException("Salon address cannot be blank");
         if (salon.getSalonPhone().length() < 5 || salon.getSalonPhone().length() > 15)
             throw new SalonMalformedException("Invalid phone number");
-        if (salon.getSalonOpenDays().contains("1")) // 여기 나중에 수정해야 함!!!
+        if (!salon.getSalonOpenDays().contains("1"))
             throw new SalonMalformedException("Open day should be at least 1 day per week");
         if (salonDao.findById(salon.getSalonId()).isPresent())
             throw new SalonIdAlreadyExists("Salon with Id " + salon.getSalonId() + " already exists.");
-        if (salonDao.findById(salon.getSalonId()).isEmpty())
-            throw new SalonNotFoundException("Salon with ID " + salon.getSalonId() + " does not exist.");
-        salonDao.create(salon);
+        salonDao.save(salon);
         return salonDao.findById(salon.getSalonId()).get();
     }
 
@@ -51,13 +49,13 @@ public class SalonServiceImpl implements SalonService {
     }
 
     @Override
-    public Salon findById(int id) throws SalonNotFoundException {
+    public Salon findById(String id) throws SalonNotFoundException {
         return salonDao.findById(id).orElseThrow(()-> new SalonNotFoundException("Salon with id " + id + "was not found."));
     }
 
     // Update salon by modifying the days on which it is open
     @Override
-    public boolean editOpenDays(String newOpenDays, int id) throws SalonMalformedException, SalonNotFoundException {
+    public boolean editOpenDays(String newOpenDays, String id) throws SalonMalformedException, SalonNotFoundException {
         if (newOpenDays.length() != 7)
             throw new SalonMalformedException("Invalid the length of days opened");
         if (salonDao.findById(id).isEmpty())
@@ -66,8 +64,7 @@ public class SalonServiceImpl implements SalonService {
     }
 
     @Override
-    public void deleteById(int id) throws SalonNotFoundException {
-        salonDao.deleteById(id);
+    public void deleteById(String id) throws SalonNotFoundException {
         if (!salonDao.deleteById(id))
             throw new SalonNotFoundException("Salon with id " + id + " was not found.");
     }

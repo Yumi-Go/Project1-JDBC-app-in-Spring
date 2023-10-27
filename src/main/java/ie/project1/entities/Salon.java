@@ -15,7 +15,7 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class Salon {
-    private int salonId; // unique
+    private String salonId; // unique
     private String salonName; // not blank, not unique
     private String salonAddress; // not blank
     private String salonPhone; // not blank, no validation is required
